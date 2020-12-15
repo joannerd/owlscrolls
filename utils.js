@@ -45,7 +45,7 @@ const defaultScrolls = {
 export const formatScrollData = (data) => {
   const scrolls = { ...defaultScrolls };
   for (const item of data) {
-    const { search_item, p25, p50, task_id } = item;
+    const { search_item, p25, p50 } = item;
     const [firstWord, secondWord, ...rest] = search_item.split(' ');
     const percentage = rest[rest.length - 1];
     if (!firstWord || !secondWord) {
@@ -66,7 +66,6 @@ export const formatScrollData = (data) => {
       scrolls[percentage].items = [
         ...scrolls[percentage].items,
         {
-          id: task_id,
           name: search_item,
           lowPrice: formatNumber(p25),
           midPrice: formatNumber(p50),
@@ -76,7 +75,6 @@ export const formatScrollData = (data) => {
       scrolls['etc'].items = [
         ...scrolls['etc'].items,
         {
-          id: task_id,
           name: search_item,
           lowPrice: formatNumber(p25),
           midPrice: formatNumber(p50),
@@ -85,15 +83,7 @@ export const formatScrollData = (data) => {
     }
   }
 
-  const allScrolls = {};
-  for (const list of Object.values(scrolls)) {
-    for (const item of list.items) {
-      allScrolls[item.id] = item;
-    }
-  }
-
   return {
     scrolls: scrolls || defaultScrolls,
-    allScrolls,
   };
 };

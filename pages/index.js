@@ -39,8 +39,9 @@ const Footer = ({ scrollTypes }) => (
   </footer>
 );
 
-const Home = ({ notFound, scrolls, allScrolls, scrollTypes }) => {
+const Home = ({ notFound, scrolls, scrollTypes }) => {
   const shareLinkRef = useRef();
+  const [allScrolls, setAllScrolls] = useState({});
   const [myOwlScrollLink, setMyOwlScrollLink] = useState('');
   const [tooltipText, setTooltipText] = useState('Copy share link');
   const [savedScrollIds, setSavedScrollIds] = useState([]);
@@ -79,6 +80,17 @@ const Home = ({ notFound, scrolls, allScrolls, scrollTypes }) => {
     document.execCommand('copy');
     setTooltipText('Copied: ' + myOwlScrollLink);
   };
+
+  useEffect(() => {
+    const scrollDictionary = {};
+    for (const list of scrolls) {
+      for (const item of list.items) {
+        const id = window.btoa(item.name);
+        scrollDictionary[id] = item;
+      }
+    }
+    setAllScrolls(scrollDictionary);
+  }, []);
 
   useEffect(() => {
     const localStorageIdString = window.localStorage.getItem(SAVED_OWL_SCROLLS);
@@ -129,11 +141,11 @@ const Home = ({ notFound, scrolls, allScrolls, scrollTypes }) => {
           >
             <h2>Saved Scrolls</h2>
             <h3 className={styles.savedTitle}>{savedScrollsMessage}</h3>
-            {savedScrolls.map(({ id, name, lowPrice, midPrice }) => (
+            {savedScrolls.map(({ name, lowPrice, midPrice }) => (
               <li
                 key={`saved-${name}`}
                 className={styles.card}
-                onClick={() => removeSavedScroll(id)}
+                onClick={() => removeSavedScroll(window.btoa(name))}
               >
                 <h3>{name}</h3>
                 <span>Low: {lowPrice}</span>
@@ -161,11 +173,11 @@ const Home = ({ notFound, scrolls, allScrolls, scrollTypes }) => {
               style={{ borderColor: colors[type] }}
             >
               <h2 style={{ backgroundColor: colors[type] }}>{type}</h2>
-              {items.map(({ id, name, lowPrice, midPrice }) => (
+              {items.map(({ name, lowPrice, midPrice }) => (
                 <li
                   key={name}
                   className={styles.card}
-                  onClick={() => saveScroll(id)}
+                  onClick={() => saveScroll(window.btoa(name))}
                 >
                   <h3>{name}</h3>
                   <span>Low: {lowPrice}</span>
@@ -193,11 +205,10 @@ export async function getStaticProps() {
     };
   }
 
-  const { scrolls, allScrolls } = formatScrollData(data);
+  const { scrolls } = formatScrollData(data);
   return {
     props: {
       scrolls: Object.values(scrolls),
-      allScrolls,
       scrollTypes: Object.keys(scrolls),
     },
   };
