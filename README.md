@@ -1,9 +1,9 @@
 # Owl Scrolls
 
-Maplestory scroll management app built to help avid scroll sellers keep their
-prices up to date with market data scraped from [OwlRepo](https://owlrepo.com/)
-with a simple user interface inspired by
-[FruitScroll](https://www.fruitscrollguide.ml/).
+MapleStory scroll management app built to help avid
+[MapleLegends](https://maplelegends.com/) scroll sellers keep their prices up to
+date with market data scraped from [OwlRepo](https://owlrepo.com/) with a simple
+user interface inspired by [FruitScroll](https://www.fruitscrollguide.ml/).
 
 Built by [Joanna Chen](https://junnac.com/)
 ([GucciKimchi](https://maplelegends.com/ranking/all?search=guccikimchi)).
