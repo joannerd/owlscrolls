@@ -2,19 +2,15 @@ name: merge-request
 on:
   pull_request:
     branches: [ main ]
-
 jobs:
   typecheck:
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
       - name: Install packages
         run: npm install
       - name: Check typings
         run: npm run check:type
-  lint:
-    steps:
       - name: Run linter
         run: npm run check:lint
-  prettier:
-    steps:
-      - name: Run prettier
-        run: npm run check:prettier
