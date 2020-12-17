@@ -1,30 +1,31 @@
-import Head from 'next/head'
-import { GetStaticProps } from 'next';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.css';
 import {
   encodeIds,
   decodeIds,
   formatScrollData,
   notifications,
-} from '../utils';
+} from '../lib/utils';
 import Footer from '../components/Footer/index';
 import ScrollList from '../components/ScrollList/index';
-import { IScrollList, IScrolls, IScroll } from '../types';
+import { IScrollList, IScrolls, IScroll } from '../lib/types';
 
-const SAVED_OWL_SCROLLS: string = 'SAVED_OWL_SCROLLS';
+const SAVED_OWL_SCROLLS = 'SAVED_OWL_SCROLLS';
 
 interface IHomeProps {
   scrolls: IScrollList[];
   scrollTypes: string[];
-};
+}
 
 const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
-  const [allScrolls, setAllScrolls] = useState <IScrolls>({});
+  const [allScrolls, setAllScrolls] = useState<IScrolls>({});
   const [shareLink, setShareLink] = useState<string>('');
   const [savedScrollIds, setSavedScrollIds] = useState<string[]>([]);
   const savedScrolls: IScroll[] = savedScrollIds.map((id) => allScrolls[id]);
-  const savedScrollNames: string[] = savedScrollIds.map((id) => allScrolls[id].name);
+  const savedScrollNames: string[] = savedScrollIds.map(
+    (id) => allScrolls[id].name
+  );
 
   const updateSavedScrollIds = (ids: string[]): void => {
     setSavedScrollIds(ids);
@@ -57,7 +58,8 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
   }, []);
 
   useEffect(() => {
-    const localStorageIdString: string = localStorage.getItem(SAVED_OWL_SCROLLS) || '';
+    const localStorageIdString: string =
+      localStorage.getItem(SAVED_OWL_SCROLLS) || '';
     if (localStorageIdString) {
       const ids: string[] = decodeIds(localStorageIdString);
       updateSavedScrollIds(ids);
@@ -73,7 +75,8 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
   }, []);
 
   const savedScrollsMessage: string = savedScrollIds.length
-    ? notifications.REMOVE_SCROLL : notifications.SAVE_SCROLL;
+    ? notifications.REMOVE_SCROLL
+    : notifications.SAVE_SCROLL;
 
   return (
     <div className={styles.container}>
@@ -109,7 +112,11 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
   );
 };
 
-export const getStaticProps = async () => {
+interface IStaticProps {
+  props: IHomeProps;
+}
+
+export const getStaticProps = async (): Promise<IStaticProps> => {
   const res = await fetch(
     'https://storage.googleapis.com/owlrepo/v1/queries/search_item_index.json'
   );
@@ -117,8 +124,10 @@ export const getStaticProps = async () => {
 
   if (!data) {
     return {
-      scrolls: [],
-      scrollTypes: [],
+      props: {
+        scrolls: [],
+        scrollTypes: [],
+      },
     };
   }
 

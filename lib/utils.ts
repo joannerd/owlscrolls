@@ -1,4 +1,4 @@
-import { IScrollLists, IOwlRepoItem } from './types';
+import { IScrollLists, IOwlRepoItem, IFormattedScrollData } from './types';
 
 export const notifications = {
   COPY_SHARE_LINK: 'Copy share link',
@@ -23,7 +23,8 @@ const fromBinary = (binary: string): string => {
   return String.fromCharCode(...new Uint16Array(bytes.buffer));
 };
 
-export const encodeIds = (ids: string[]): string => window.btoa(toBinary(ids.join('|')));
+export const encodeIds = (ids: string[]): string =>
+  window.btoa(toBinary(ids.join('|')));
 
 export const decodeIds = (idString: string): string[] => {
   const binaryIds: string = window.atob(idString);
@@ -70,7 +71,9 @@ const defaultScrolls: IScrollLists = {
   },
 };
 
-export const formatScrollData = (data: IOwlRepoItem[]) => {
+export const formatScrollData = (
+  data: IOwlRepoItem[]
+): IFormattedScrollData => {
   const allScrolls = {};
   const scrolls = { ...defaultScrolls };
   for (const item of data) {

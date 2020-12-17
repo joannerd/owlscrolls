@@ -1,23 +1,22 @@
-
 export interface IScroll {
-  type: string,
-  name: string,
-  lowPrice: string,
-  midPrice: string,
-};
+  type: string;
+  name: string;
+  lowPrice: string;
+  midPrice: string;
+}
 
 export interface IScrolls {
   [type: string]: IScroll;
-};
+}
 
 export interface IScrollList {
-  type: string,
-  items: IScroll[],
-};
+  type: string;
+  items: IScroll[];
+}
 
 export interface IScrollLists {
   [type: string]: IScrollList;
-};
+}
 
 export interface IOwlRepoItem {
   search_item: string;
@@ -37,4 +36,8 @@ export interface IOwlRepoItem {
   percent_complete?: number;
   std?: number;
   n_owled?: number;
-};
+}
+
+export interface IFormattedScrollData {
+  scrolls: IScrollLists;
+}

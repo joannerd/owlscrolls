@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import styles from '../../styles/Footer.module.css';
 
 interface IFooterProps {
-  scrollTypes: string[],
-};
+  scrollTypes: string[];
+}
 
 interface ILink {
-  emoji: string,
-  url: string,
-};
+  emoji: string;
+  url: string;
+}
 
 const Footer = ({ scrollTypes }: IFooterProps): React.ReactElement => {
   const [currentHash, setCurrentHash] = useState<string>('');
@@ -30,7 +30,7 @@ const Footer = ({ scrollTypes }: IFooterProps): React.ReactElement => {
       url: 'https://github.com/joannerd',
     },
   ];
-  
+
   useEffect(() => {
     setTimeout(resetCurrentHash, 3000);
   }, [currentHash]);
@@ -69,5 +69,5 @@ const Footer = ({ scrollTypes }: IFooterProps): React.ReactElement => {
     </footer>
   );
 };
- 
+
 export default Footer;

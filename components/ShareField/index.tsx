@@ -1,14 +1,16 @@
 import { useRef, useState } from 'react';
 import styles from '../../styles/ShareField.module.css';
-import { notifications } from '../../utils';
+import { notifications } from '../../lib/utils';
 
 interface IShareFieldProps {
   link: string;
-};
+}
 
 const ShareField = ({ link }: IShareFieldProps): React.ReactElement => {
   const shareLinkRef = useRef<HTMLInputElement | null>(null);
-  const [tooltipText, setTooltipText] = useState<string>(notifications.COPY_SHARE_LINK);
+  const [tooltipText, setTooltipText] = useState<string>(
+    notifications.COPY_SHARE_LINK
+  );
 
   const copyLink = () => {
     const copyText = shareLinkRef.current;

@@ -1,6 +1,6 @@
 import styles from '../../styles/ScrollList.module.css';
 import ShareField from '../ShareField/index';
-import { IScroll } from '../../types';
+import { IScroll } from '../../lib/types';
 
 const colors = {
   '10%': 'gold',
@@ -9,7 +9,7 @@ const colors = {
   '70%': '#D6CECE', // grey
   '100%': '#A2DCF3', // light blue
   etc: 'rgb(128, 87, 87)', // brown
-  'saved': 'rgb(168, 228, 56)', // green
+  saved: 'rgb(168, 228, 56)', // green
 };
 
 interface IScrollCardProps {
@@ -18,7 +18,7 @@ interface IScrollCardProps {
   lowPrice: string;
   midPrice: string;
   handleClick: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-};
+}
 
 interface IScrollListProps {
   key: string;
@@ -28,7 +28,7 @@ interface IScrollListProps {
   link?: string;
   savedScrollsMessage?: string;
   savedScrollNames?: string[];
-};
+}
 
 const ScrollCard = ({
   name,

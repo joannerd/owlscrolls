@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "$(npm bin)/tsc --noEmit"
+    "check:lint": "eslint './**/*.ts*' --fix",
+    "check:type": "$(npm bin)/tsc --noEmit",
+    "check:prettier": "prettier --write components pages lib",
+    "check:all": "npm run check:lint && npm run check:type && npm run check:prettier"
   },
   "dependencies": {
     "next": "10.0.3",
