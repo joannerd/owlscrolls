@@ -31,6 +31,17 @@ export const decodeIds = (idString: string): string[] => {
   return fromBinary(binaryIds).split('|');
 };
 
+const formatName = (name: string): string => {
+  const [first, second, third, ...rest] = name.split(' ');
+  const isDarkScroll =
+    first.toLowerCase() === 'dark' && second.toLowerCase() === 'scroll';
+  const isNormalScroll =
+    first.toLowerCase() === 'scroll' && second.toLowerCase() === 'for';
+  if (isDarkScroll) return rest.join(' ');
+  if (isNormalScroll) return [third, ...rest].join(' ');
+  return name;
+};
+
 const formatNumber = (number: number): string => {
   if (!number) return '';
   const numberString = number.toString();
@@ -49,10 +60,6 @@ const formatNumber = (number: number): string => {
 };
 
 const defaultScrolls: IScrollLists = {
-  '10%': {
-    type: '10%',
-    items: [],
-  },
   '30%': {
     type: '30%',
     items: [],
@@ -63,6 +70,10 @@ const defaultScrolls: IScrollLists = {
   },
   '70%': {
     type: '70%',
+    items: [],
+  },
+  '10%': {
+    type: '10%',
     items: [],
   },
   '100%': {
@@ -99,7 +110,7 @@ export const formatScrollData = (
 
     allScrolls[search_item] = {
       type: percentage,
-      name: search_item,
+      name: formatName(search_item),
       lowPrice: formatNumber(p25),
       highPrice: formatNumber(p100),
     };

@@ -68,8 +68,8 @@ export const ScrollListContainer = ({
       {isSavedList && savedScrollsMessage && (
         <h3 className={styles.savedTitle}>{savedScrollsMessage}</h3>
       )}
-      {children}
       {isValidLink && <ShareField link={link} />}
+      {children}
     </>
   );
 };
