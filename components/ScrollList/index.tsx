@@ -1,8 +1,9 @@
 import styles from '../../styles/ScrollList.module.css';
 import ShareField from '../ShareField/index';
 import { IScroll } from '../../lib/types';
+import { ReactNode } from 'react';
 
-const colors = {
+export const colors = {
   '10%': 'gold',
   '30%': '#8C2F8C', // purple
   '60%': '#EE7342', // orange
@@ -12,7 +13,7 @@ const colors = {
   saved: 'rgb(168, 228, 56)', // green
 };
 
-interface IScrollCardProps {
+export interface IScrollCardProps {
   name: string;
   stylesClassName: string;
   lowPrice: string;
@@ -20,7 +21,7 @@ interface IScrollCardProps {
   handleClick: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-interface IScrollListProps {
+export interface IScrollListProps {
   key: string;
   type: string;
   items: IScroll[];
@@ -28,6 +29,13 @@ interface IScrollListProps {
   link?: string;
   savedScrollsMessage?: string;
   savedScrollNames?: string[];
+}
+
+interface IScrollListContainerProps {
+  type: string;
+  savedScrollsMessage: string;
+  link: string;
+  children: ReactNode;
 }
 
 const ScrollCard = ({
@@ -44,6 +52,28 @@ const ScrollCard = ({
   </li>
 );
 
+export const ScrollListContainer = ({
+  type,
+  savedScrollsMessage,
+  link,
+  children,
+}: IScrollListContainerProps): React.ReactElement => {
+  const isSavedList = type === 'saved';
+  const isValidLink = link && !link.slice(link.length - 6).includes('saved');
+  return (
+    <>
+      <h2 style={{ backgroundColor: colors[type] }}>
+        {isSavedList ? 'Saved Scrolls' : type}
+      </h2>
+      {isSavedList && savedScrollsMessage && (
+        <h3 className={styles.savedTitle}>{savedScrollsMessage}</h3>
+      )}
+      {children}
+      {isValidLink && <ShareField link={link} />}
+    </>
+  );
+};
+
 const ScrollList = ({
   type,
   items,
@@ -51,22 +81,18 @@ const ScrollList = ({
   handleClick,
   savedScrollsMessage,
   link,
-}: IScrollListProps): React.ReactElement => {
-  const isSavedList = type === 'saved';
-  const isValidLink = link && !link.slice(link.length - 6).includes('saved');
-  return (
-    <ul
-      id={type}
-      key={type}
-      className={styles.list}
-      style={{ borderColor: colors[type] }}
+}: IScrollListProps): React.ReactElement => (
+  <ul
+    id={type}
+    key={type}
+    className={styles.list}
+    style={{ borderColor: colors[type] }}
+  >
+    <ScrollListContainer
+      type={type}
+      savedScrollsMessage={savedScrollsMessage}
+      link={link}
     >
-      <h2 style={{ backgroundColor: colors[type] }}>
-        {isSavedList ? 'Saved Scrolls' : type}
-      </h2>
-      {isSavedList && savedScrollsMessage && (
-        <h3 className={styles.savedTitle}>{savedScrollsMessage}</h3>
-      )}
       {items.map(({ name, lowPrice, midPrice }) => (
         <ScrollCard
           key={name}
@@ -81,9 +107,8 @@ const ScrollList = ({
           handleClick={() => handleClick(window.btoa(name))}
         />
       ))}
-      {isValidLink && <ShareField link={link} />}
-    </ul>
-  );
-};
+    </ScrollListContainer>
+  </ul>
+);
 
 export default ScrollList;
