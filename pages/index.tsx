@@ -7,8 +7,9 @@ import {
   formatScrollData,
   notifications,
 } from '../lib/utils';
-import Footer from '../components/Footer/index';
-import ScrollList from '../components/ScrollList/index';
+import Footer from '../components/Footer';
+import ScrollList from '../components/ScrollList';
+import DraggableScrollList from '../components/DraggableScrollList';
 import { IScrollList, IScrolls, IScroll } from '../lib/types';
 
 const SAVED_OWL_SCROLLS = 'SAVED_OWL_SCROLLS';
@@ -88,13 +89,15 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to Owl Scrolls!</h1>
         <section className={styles.lists}>
-          <ScrollList
+          <DraggableScrollList
             key="saved"
             type="saved"
             items={savedScrolls}
             handleClick={removeSavedScroll}
             savedScrollsMessage={savedScrollsMessage}
             link={shareLink}
+            savedScrollIds={savedScrollIds}
+            updateSavedScrollIds={updateSavedScrollIds}
           />
           {scrolls.map(({ type, items }) => (
             <ScrollList
