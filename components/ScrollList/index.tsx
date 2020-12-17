@@ -13,11 +13,8 @@ export const colors = {
   saved: 'rgb(168, 228, 56)', // green
 };
 
-export interface IScrollCardProps {
-  name: string;
+export interface IScrollCardProps extends Omit<IScroll, 'type'> {
   stylesClassName: string;
-  lowPrice: string;
-  midPrice: string;
   handleClick: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
@@ -42,13 +39,15 @@ const ScrollCard = ({
   name,
   stylesClassName,
   lowPrice,
-  midPrice,
+  highPrice,
   handleClick,
 }: IScrollCardProps): React.ReactElement => (
   <li key={name} className={stylesClassName} onClick={handleClick}>
     <h3>{name}</h3>
-    <span>Low: {lowPrice}</span>
-    <span>Mid: {midPrice}</span>
+    <div>
+      <span>⬇️&nbsp; {lowPrice}</span>
+      <span>⬆️&nbsp; {highPrice}</span>
+    </div>
   </li>
 );
 
@@ -58,8 +57,9 @@ export const ScrollListContainer = ({
   link,
   children,
 }: IScrollListContainerProps): React.ReactElement => {
-  const isSavedList = type === 'saved';
-  const isValidLink = link && !link.slice(link.length - 6).includes('saved');
+  const isSavedList: boolean = type === 'saved';
+  const isValidLink: boolean =
+    link && !link.slice(link.length - 6).includes('saved');
   return (
     <>
       <h2 style={{ backgroundColor: colors[type] }}>
@@ -93,7 +93,7 @@ const ScrollList = ({
       savedScrollsMessage={savedScrollsMessage}
       link={link}
     >
-      {items.map(({ name, lowPrice, midPrice }) => (
+      {items.map(({ name, lowPrice, highPrice }) => (
         <ScrollCard
           key={name}
           name={name}
@@ -103,7 +103,7 @@ const ScrollList = ({
               : styles.card
           }
           lowPrice={lowPrice}
-          midPrice={midPrice}
+          highPrice={highPrice}
           handleClick={() => handleClick(window.btoa(name))}
         />
       ))}

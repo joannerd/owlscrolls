@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styles from '../../styles/ScrollList.module.css';
 import { IScrollListProps, colors } from '../ScrollList';
 import { ScrollListContainer } from '../ScrollList';
 
-interface IDraggableScrollList extends IScrollListProps {
+interface IDraggableScrollList
+  extends Omit<IScrollListProps, 'savedScrollNames'> {
   savedScrollIds: string[];
   updateSavedScrollIds: (ids: string[]) => void;
 }
@@ -12,7 +14,6 @@ interface IDraggableScrollList extends IScrollListProps {
 const DraggableScrollList = ({
   type,
   items,
-  savedScrollNames,
   handleClick,
   savedScrollsMessage,
   link,
@@ -44,23 +45,21 @@ const DraggableScrollList = ({
               savedScrollsMessage={savedScrollsMessage}
               link={link}
             >
-              {items.map(({ name, lowPrice, midPrice }, i) => (
+              {items.map(({ name, lowPrice, highPrice }, i) => (
                 <Draggable key={name} draggableId={name} index={i}>
                   {(providedDrag) => (
                     <li
-                      className={
-                        savedScrollNames && savedScrollNames.includes(name)
-                          ? styles.savedCard
-                          : styles.card
-                      }
-                      onClick={handleClick}
+                      className={styles.draggableCard}
+                      onClick={() => handleClick(window.btoa(name))}
                       ref={providedDrag.innerRef}
                       {...providedDrag.draggableProps}
                       {...providedDrag.dragHandleProps}
                     >
                       <h3>{name}</h3>
-                      <span>Low: {lowPrice}</span>
-                      <span>Mid: {midPrice}</span>
+                      <div>
+                        <span>⬇️&nbsp; {lowPrice}</span>
+                        <span>⬆️&nbsp; {highPrice}</span>
+                      </div>
                     </li>
                   )}
                 </Draggable>

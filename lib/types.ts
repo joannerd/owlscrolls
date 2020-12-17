@@ -2,7 +2,7 @@ export interface IScroll {
   type: string;
   name: string;
   lowPrice: string;
-  midPrice: string;
+  highPrice: string;
 }
 
 export interface IScrolls {

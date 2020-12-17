@@ -77,7 +77,7 @@ export const formatScrollData = (
   const allScrolls = {};
   const scrolls = { ...defaultScrolls };
   for (const item of data) {
-    const { search_item, p25, p50, mean } = item;
+    const { search_item, p25, p100 } = item;
     const [firstWord, secondWord, ...rest] = search_item.split(' ');
     if (!firstWord || !secondWord) {
       continue;
@@ -101,8 +101,7 @@ export const formatScrollData = (
       type: percentage,
       name: search_item,
       lowPrice: formatNumber(p25),
-      midPrice: formatNumber(p50),
-      mean: formatNumber(mean),
+      highPrice: formatNumber(p100),
     };
   }
 

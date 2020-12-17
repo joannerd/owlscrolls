@@ -27,8 +27,7 @@
 }
 
 .card {
-  padding: 20px;
-  font-size: 1.5rem;
+  padding: 20px 40px;
   transition: color 0.15s ease, border-color 0.15s ease;
   display: flex;
   flex-direction: column;
@@ -37,8 +36,7 @@
 }
 
 .savedCard {
-  padding: 20px;
-  font-size: 1.5rem;
+  padding: 20px 40px;
   transition: color 0.15s ease, border-color 0.15s ease;
   display: flex;
   flex-direction: column;
@@ -47,6 +45,28 @@
   width: 100%;
 }
 
+.draggableCard {
+  padding: 20px 40px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 15px;
+  background-color: white;
+}
+
+.card div, .savedCard div, .draggableCard div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.draggableCard:hover,
+.draggableCard:focus,
+.draggableCard:active,
 .card:hover,
 .card:focus,
 .card:active {
@@ -54,23 +74,35 @@
 }
 
 .list h2 {
-  margin: 0 0 1rem 0;
+  margin: 0;
   font-size: 40px;
 }
 
-.card h3, .savedCard h3 {
-  margin: 0 0 1rem 0;
-  font-size: 28px;
+.card h3, .savedCard h3, .draggableCard h3 {
+  margin: 0;
+  font-size: 24px;
+  padding-bottom: 8px;
 }
 
-.card p, .savedCard p {
+.card div span, .savedCard div span, .draggableCard div span {
   margin: 0;
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 18px;
+  padding-right: 20px;
 }
 
 .savedTitle {
   text-align: center;
   margin: 0;
-  padding: 20px 0;
+  padding: 15px 0;
+}
+
+@media (max-width: 620px) {
+  .card h3, .savedCard h3, .draggableCard h3 {
+    font-size: 18px;
+    padding-bottom: 4px;
+  }
+
+  .card, .savedCard, .draggableCard {
+    padding: 10px 20px 15px;
+  }
 }
