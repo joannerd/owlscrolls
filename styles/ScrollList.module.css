@@ -1,0 +1,76 @@
+.list {
+  margin: 1rem;
+  flex-basis: 45%;
+  padding: 0;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  border: 10px solid transparent;
+  border-radius: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.list input {
+  border-radius: 2px;
+  width: 100%;
+  height: 40px;
+  padding: 5px 15px;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  background-color: rgb(226, 226, 226);
+  cursor: pointer;
+}
+
+.card {
+  padding: 20px;
+  font-size: 1.5rem;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  width: 100%;
+}
+
+.savedCard {
+  padding: 20px;
+  font-size: 1.5rem;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: not-allowed;
+  background-color: rgb(70, 70, 70);
+  width: 100%;
+}
+
+.card:hover,
+.card:focus,
+.card:active {
+  background-color: rgb(235, 235, 235);
+}
+
+.list h2 {
+  margin: 0 0 1rem 0;
+  font-size: 40px;
+}
+
+.card h3, .savedCard h3 {
+  margin: 0 0 1rem 0;
+  font-size: 28px;
+}
+
+.card p, .savedCard p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.savedTitle {
+  text-align: center;
+  margin: 0;
+  padding: 20px 0;
+}

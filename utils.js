@@ -1,3 +1,33 @@
+export const notifications = {
+  COPY_SHARE_LINK: 'Copy share link',
+  COPIED: 'Copied!',
+  REMOVE_SCROLL: 'Click on a scroll to remove it.',
+  SAVE_SCROLL: 'Click on a scroll to save it.',
+};
+
+const toBinary = (string) => {
+  const codeUnits = new Uint16Array(string.length);
+  for (let i = 0; i < codeUnits.length; i++) {
+    codeUnits[i] = string.charCodeAt(i);
+  }
+  return String.fromCharCode(...new Uint8Array(codeUnits.buffer));
+};
+
+const fromBinary = (binary) => {
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return String.fromCharCode(...new Uint16Array(bytes.buffer));
+};
+
+export const encodeIds = (ids) => window.btoa(toBinary(ids.join('|')));
+
+export const decodeIds = (idString) => {
+  const binaryIds = window.atob(idString);
+  return fromBinary(binaryIds).split('|');
+};
+
 const formatNumber = (number) => {
   if (!number) return '';
   const numberString = number.toString();
@@ -36,18 +66,14 @@ const defaultScrolls = {
     type: '100%',
     items: [],
   },
-  'etc': {
-    type: 'etc',
-    items: [],
-  },
 };
 
 export const formatScrollData = (data) => {
+  const allScrolls = {};
   const scrolls = { ...defaultScrolls };
   for (const item of data) {
     const { search_item, p25, p50 } = item;
     const [firstWord, secondWord, ...rest] = search_item.split(' ');
-    const percentage = rest[rest.length - 1];
     if (!firstWord || !secondWord) {
       continue;
     }
@@ -55,32 +81,29 @@ export const formatScrollData = (data) => {
     const isScroll =
       firstWord.toLowerCase() === 'scroll' ||
       secondWord.toLowerCase() === 'scroll';
-
     if (!isScroll) {
       continue;
     }
 
+    const percentage = rest[rest.length - 1];
     const isPercentage =
       scrolls[percentage] && Array.isArray(scrolls[percentage].items);
-    if (isPercentage) {
-      scrolls[percentage].items = [
-        ...scrolls[percentage].items,
-        {
-          name: search_item,
-          lowPrice: formatNumber(p25),
-          midPrice: formatNumber(p50),
-        },
-      ];
-    } else {
-      scrolls['etc'].items = [
-        ...scrolls['etc'].items,
-        {
-          name: search_item,
-          lowPrice: formatNumber(p25),
-          midPrice: formatNumber(p50),
-        },
-      ];
+    if (!isPercentage) {
+      continue;
     }
+
+    allScrolls[search_item] = {
+      type: percentage,
+      name: search_item,
+      lowPrice: formatNumber(p25),
+      midPrice: formatNumber(p50),
+    };
+  }
+
+  for (const key in allScrolls) {
+    const scroll = allScrolls[key];
+    const percent = scroll.type;
+    scrolls[percent].items = [...scrolls[percent].items, scroll];
   }
 
   return {
