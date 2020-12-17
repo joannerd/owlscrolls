@@ -1,5 +1,6 @@
 .list {
-  margin: 1rem;
+  width: 540px;
+  margin: 0 16px 32px;
   flex-basis: 45%;
   padding: 0;
   text-align: left;
@@ -11,7 +12,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  height: auto;
 }
 
 .list input {
@@ -92,11 +94,19 @@
 
 .savedTitle {
   text-align: center;
+  font-size: 18px;
+  font-weight: normal;
   margin: 0;
-  padding: 15px 0;
+  padding: 15px 0 0;
 }
 
 @media (max-width: 620px) {
+  .list {
+    width: 100%;
+    min-width: 320px;
+    margin: 16px 0;
+  }
+
   .card h3, .savedCard h3, .draggableCard h3 {
     font-size: 18px;
     padding-bottom: 4px;

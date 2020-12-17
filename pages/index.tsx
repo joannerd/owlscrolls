@@ -88,26 +88,30 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to Owl Scrolls!</h1>
-        <section className={styles.lists}>
-          <DraggableScrollList
-            key="saved"
-            type="saved"
-            items={savedScrolls}
-            handleClick={removeSavedScroll}
-            savedScrollsMessage={savedScrollsMessage}
-            link={shareLink}
-            savedScrollIds={savedScrollIds}
-            updateSavedScrollIds={updateSavedScrollIds}
-          />
-          {scrolls.map(({ type, items }) => (
-            <ScrollList
-              key={type}
-              type={type}
-              items={items}
-              handleClick={saveScroll}
-              savedScrollNames={savedScrollNames}
+        <section className={styles.listsContainer}>
+          <article className={styles.fixedLists}>
+            <DraggableScrollList
+              key="saved"
+              type="saved"
+              items={savedScrolls}
+              handleClick={removeSavedScroll}
+              savedScrollsMessage={savedScrollsMessage}
+              link={shareLink}
+              savedScrollIds={savedScrollIds}
+              updateSavedScrollIds={updateSavedScrollIds}
             />
-          ))}
+          </article>
+          <article className={styles.lists}>
+            {scrolls.map(({ type, items }) => (
+              <ScrollList
+                key={type}
+                type={type}
+                items={items}
+                handleClick={saveScroll}
+                savedScrollNames={savedScrollNames}
+              />
+            ))}
+          </article>
         </section>
       </main>
       <Footer scrollTypes={scrollTypes} />
