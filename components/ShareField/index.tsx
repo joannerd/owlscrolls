@@ -2,9 +2,13 @@ import { useRef, useState } from 'react';
 import styles from '../../styles/ShareField.module.css';
 import { notifications } from '../../utils';
 
-const ShareField = ({ link }) => {
-  const shareLinkRef = useRef();
-  const [tooltipText, setTooltipText] = useState(notifications.COPY_SHARE_LINK);
+interface IShareFieldProps {
+  link: string;
+};
+
+const ShareField = ({ link }: IShareFieldProps): React.ReactElement => {
+  const shareLinkRef = useRef<HTMLInputElement | null>(null);
+  const [tooltipText, setTooltipText] = useState<string>(notifications.COPY_SHARE_LINK);
 
   const copyLink = () => {
     const copyText = shareLinkRef.current;
@@ -12,7 +16,7 @@ const ShareField = ({ link }) => {
     copyText.setSelectionRange(0, 99999);
     document.execCommand('copy');
     setTooltipText(notifications.COPIED);
-    setTimeout(() => setTooltipText(notifications.COPY_SHARE_LINK), 20000);
+    setTimeout(() => setTooltipText(notifications.COPY_SHARE_LINK), 2000);
   };
 
   return (

@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react';
 import styles from '../../styles/Footer.module.css';
 
-const Footer = ({ scrollTypes }) => {
-  const [currentHash, setCurrentHash] = useState('');
-  const resetCurrentHash = () => setCurrentHash('');
-  const SAVED = 'saved';
-  const getClassName = (isActive) => isActive ? styles.activeFooterLink : {};
-  const iconLinks = [
+interface IFooterProps {
+  scrollTypes: string[],
+};
+
+interface ILink {
+  emoji: string,
+  url: string,
+};
+
+const Footer = ({ scrollTypes }: IFooterProps): React.ReactElement => {
+  const [currentHash, setCurrentHash] = useState<string>('');
+  const resetCurrentHash = (): void => setCurrentHash('');
+  const SAVED: Readonly<string> = 'saved';
+  const getClassName = (isActive: boolean): string =>
+    isActive ? styles.activeFooterLink : '';
+  const iconLinks: ILink[] = [
     {
       emoji: '🍅',
       url: 'http://www.fruitscrollguide.ml/',
