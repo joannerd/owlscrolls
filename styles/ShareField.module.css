@@ -1,7 +1,6 @@
 .tooltip {
   position: relative;
   display: inline-block;
-  margin-top: 10px;
   margin-bottom: 10px;
   width: 60%;
   display: flex;
