@@ -1,3 +1,5 @@
+import { IScrollLists, IOwlRepoItem, IFormattedScrollData } from './types';
+
 export const notifications = {
   COPY_SHARE_LINK: 'Copy share link',
   COPIED: 'Copied!',
@@ -5,7 +7,7 @@ export const notifications = {
   SAVE_SCROLL: 'Click on a scroll to save it.',
 };
 
-const toBinary = (string) => {
+const toBinary = (string: string): string => {
   const codeUnits = new Uint16Array(string.length);
   for (let i = 0; i < codeUnits.length; i++) {
     codeUnits[i] = string.charCodeAt(i);
@@ -13,7 +15,7 @@ const toBinary = (string) => {
   return String.fromCharCode(...new Uint8Array(codeUnits.buffer));
 };
 
-const fromBinary = (binary) => {
+const fromBinary = (binary: string): string => {
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < bytes.length; i++) {
     bytes[i] = binary.charCodeAt(i);
@@ -21,14 +23,15 @@ const fromBinary = (binary) => {
   return String.fromCharCode(...new Uint16Array(bytes.buffer));
 };
 
-export const encodeIds = (ids) => window.btoa(toBinary(ids.join('|')));
+export const encodeIds = (ids: string[]): string =>
+  window.btoa(toBinary(ids.join('|')));
 
-export const decodeIds = (idString) => {
-  const binaryIds = window.atob(idString);
+export const decodeIds = (idString: string): string[] => {
+  const binaryIds: string = window.atob(idString);
   return fromBinary(binaryIds).split('|');
 };
 
-const formatNumber = (number) => {
+const formatNumber = (number: number): string => {
   if (!number) return '';
   const numberString = number.toString();
   let formattedNumberString = '';
@@ -45,7 +48,7 @@ const formatNumber = (number) => {
   return formattedNumberString.split('').reverse().join('');
 };
 
-const defaultScrolls = {
+const defaultScrolls: IScrollLists = {
   '10%': {
     type: '10%',
     items: [],
@@ -68,11 +71,13 @@ const defaultScrolls = {
   },
 };
 
-export const formatScrollData = (data) => {
+export const formatScrollData = (
+  data: IOwlRepoItem[]
+): IFormattedScrollData => {
   const allScrolls = {};
   const scrolls = { ...defaultScrolls };
   for (const item of data) {
-    const { search_item, p25, p50 } = item;
+    const { search_item, p25, p50, mean } = item;
     const [firstWord, secondWord, ...rest] = search_item.split(' ');
     if (!firstWord || !secondWord) {
       continue;
@@ -97,6 +102,7 @@ export const formatScrollData = (data) => {
       name: search_item,
       lowPrice: formatNumber(p25),
       midPrice: formatNumber(p50),
+      mean: formatNumber(mean),
     };
   }
 

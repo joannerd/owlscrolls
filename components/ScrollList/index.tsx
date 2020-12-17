@@ -1,5 +1,6 @@
 import styles from '../../styles/ScrollList.module.css';
 import ShareField from '../ShareField/index';
+import { IScroll } from '../../lib/types';
 
 const colors = {
   '10%': 'gold',
@@ -8,8 +9,26 @@ const colors = {
   '70%': '#D6CECE', // grey
   '100%': '#A2DCF3', // light blue
   etc: 'rgb(128, 87, 87)', // brown
-  'saved': 'rgb(168, 228, 56)', // green
+  saved: 'rgb(168, 228, 56)', // green
 };
+
+interface IScrollCardProps {
+  name: string;
+  stylesClassName: string;
+  lowPrice: string;
+  midPrice: string;
+  handleClick: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+}
+
+interface IScrollListProps {
+  key: string;
+  type: string;
+  items: IScroll[];
+  handleClick: (id: string) => void;
+  link?: string;
+  savedScrollsMessage?: string;
+  savedScrollNames?: string[];
+}
 
 const ScrollCard = ({
   name,
@@ -17,7 +36,7 @@ const ScrollCard = ({
   lowPrice,
   midPrice,
   handleClick,
-}) => (
+}: IScrollCardProps): React.ReactElement => (
   <li key={name} className={stylesClassName} onClick={handleClick}>
     <h3>{name}</h3>
     <span>Low: {lowPrice}</span>
@@ -32,7 +51,7 @@ const ScrollList = ({
   handleClick,
   savedScrollsMessage,
   link,
-}) => {
+}: IScrollListProps): React.ReactElement => {
   const isSavedList = type === 'saved';
   const isValidLink = link && !link.slice(link.length - 6).includes('saved');
   return (
