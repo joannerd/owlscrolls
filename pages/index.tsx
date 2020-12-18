@@ -22,7 +22,7 @@ interface IHomeProps {
 const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
   const [allScrolls, setAllScrolls] = useState<IScrolls>({});
   const [shareLink, setShareLink] = useState<string>('');
-  const [isMacbook, setIsMacbook] = useState<boolean>(false);
+  const [isMacbookSafari, setIsMacbookSafari] = useState<boolean>(false);
   const [savedScrollIds, setSavedScrollIds] = useState<string[]>([]);
   const savedScrolls: IScroll[] = savedScrollIds.map((id) => allScrolls[id]);
   const savedScrollNames: string[] = savedScrollIds.map(
@@ -77,8 +77,12 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (navigator.userAgent.includes('Macintosh')) {
-      setIsMacbook(true);
+    const deviceName = navigator.userAgent;
+    const isMacbook = deviceName.includes('Macintosh');
+    const isChrome = deviceName.includes('Chrome');
+    const isFirefox = deviceName.includes('Firefox');
+    if (isMacbook && !isChrome && !isFirefox) {
+      setIsMacbookSafari(true);
     }
   }, []);
 
@@ -97,7 +101,7 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
         <h1 className={styles.title}>Welcome to Owl Scrolls!</h1>
         <section className={styles.listsContainer}>
           <article
-            className={isMacbook ? styles.macbookLists : styles.fixedLists}
+            className={isMacbookSafari ? styles.macbookLists : styles.fixedLists}
           >
             <DraggableScrollList
               key="saved"
@@ -110,7 +114,7 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
               updateSavedScrollIds={updateSavedScrollIds}
             />
           </article>
-          <article className={isMacbook ? styles.macbookLists : styles.lists}>
+          <article className={isMacbookSafari ? styles.macbookLists : styles.lists}>
             {scrolls.map(({ type, items }) => (
               <ScrollList
                 key={type}
