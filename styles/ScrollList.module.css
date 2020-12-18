@@ -115,4 +115,9 @@
   .card, .savedCard, .draggableCard {
     padding: 10px 20px 15px;
   }
+
+  .prices span {
+    width: 50%;
+    padding: 0;
+  }
 }
