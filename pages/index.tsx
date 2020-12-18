@@ -22,6 +22,7 @@ interface IHomeProps {
 const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
   const [allScrolls, setAllScrolls] = useState<IScrolls>({});
   const [shareLink, setShareLink] = useState<string>('');
+  const [isMacbook, setIsMacbook] = useState<boolean>(false);
   const [savedScrollIds, setSavedScrollIds] = useState<string[]>([]);
   const savedScrolls: IScroll[] = savedScrollIds.map((id) => allScrolls[id]);
   const savedScrollNames: string[] = savedScrollIds.map(
@@ -75,6 +76,12 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
     return () => updateSavedScrollIds(savedScrollIds);
   }, []);
 
+  useEffect(() => {
+    if (navigator.userAgent.includes('Macintosh')) {
+      setIsMacbook(true);
+    }
+  }, []);
+
   const savedScrollsMessage: string = savedScrollIds.length
     ? notifications.REMOVE_SCROLL
     : notifications.SAVE_SCROLL;
@@ -89,7 +96,9 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to Owl Scrolls!</h1>
         <section className={styles.listsContainer}>
-          <article className={styles.fixedLists}>
+          <article
+            className={isMacbook ? styles.macbookLists : styles.fixedLists}
+          >
             <DraggableScrollList
               key="saved"
               type="saved"
@@ -101,7 +110,7 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
               updateSavedScrollIds={updateSavedScrollIds}
             />
           </article>
-          <article className={styles.lists}>
+          <article className={isMacbook ? styles.macbookLists : styles.lists}>
             {scrolls.map(({ type, items }) => (
               <ScrollList
                 key={type}
