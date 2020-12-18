@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styles from '../../styles/ScrollList.module.css';
