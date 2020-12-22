@@ -31,6 +31,17 @@ export const decodeIds = (idString: string): string[] => {
   return fromBinary(binaryIds).split('|');
 };
 
+export const formatNameId = (name: string): string =>
+  name.toLowerCase().split(' ').join('-').replace('.', '');
+
+export const unformatNameId = (name: string): string =>
+  name
+    .split('-')
+    .map((word) =>
+      word === 'for' ? word : word[0].toUpperCase() + word.slice(1)
+    )
+    .join(' ');
+
 const formatName = (name: string): string => {
   const [first, second, third, ...rest] = name.split(' ');
   const isDarkScroll =
@@ -119,10 +130,13 @@ export const formatScrollData = (
   for (const key in allScrolls) {
     const scroll = allScrolls[key];
     const percent = scroll.type;
-    scrolls[percent].items = [...scrolls[percent].items, scroll];
+    scrolls[percent].items = [...scrolls[percent].items, scroll].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
   }
 
   return {
-    scrolls: scrolls || defaultScrolls,
+    scrolls: Object.values(scrolls),
+    scrollTypes: Object.keys(scrolls),
   };
 };

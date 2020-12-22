@@ -6,20 +6,20 @@ import {
   decodeIds,
   formatScrollData,
   notifications,
+  formatNameId,
 } from '../lib/utils';
 import Footer from '../components/Footer';
 import ScrollList from '../components/ScrollList';
 import DraggableScrollList from '../components/DraggableScrollList';
-import { IScrollList, IScrolls, IScroll } from '../lib/types';
+import SearchBar from '../components/SearchBar';
+import { IFormattedScrollData, IScrolls, IScroll } from '../lib/types';
 
 const SAVED_OWL_SCROLLS = 'SAVED_OWL_SCROLLS';
 
-interface IHomeProps {
-  scrolls: IScrollList[];
-  scrollTypes: string[];
-}
-
-const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
+const Home = ({
+  scrolls,
+  scrollTypes,
+}: IFormattedScrollData): React.ReactElement => {
   const [allScrolls, setAllScrolls] = useState<IScrolls>({});
   const [shareLink, setShareLink] = useState<string>('');
   const [isMacbookSafari, setIsMacbookSafari] = useState<boolean>(false);
@@ -99,9 +99,16 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to Owl Scrolls!</h1>
+        <SearchBar
+          scrollNames={Object.values(allScrolls).map(({ name }) =>
+            formatNameId(name)
+          )}
+        />
         <section className={styles.listsContainer}>
           <article
-            className={isMacbookSafari ? styles.macbookLists : styles.fixedLists}
+            className={
+              isMacbookSafari ? styles.macbookLists : styles.fixedLists
+            }
           >
             <DraggableScrollList
               key="saved"
@@ -114,7 +121,9 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
               updateSavedScrollIds={updateSavedScrollIds}
             />
           </article>
-          <article className={isMacbookSafari ? styles.macbookLists : styles.lists}>
+          <article
+            className={isMacbookSafari ? styles.macbookLists : styles.lists}
+          >
             {scrolls.map(({ type, items }) => (
               <ScrollList
                 key={type}
@@ -133,7 +142,7 @@ const Home = ({ scrolls, scrollTypes }: IHomeProps): React.ReactElement => {
 };
 
 interface IStaticProps {
-  props: IHomeProps;
+  props: IFormattedScrollData;
 }
 
 export const getStaticProps = async (): Promise<IStaticProps> => {
@@ -151,11 +160,11 @@ export const getStaticProps = async (): Promise<IStaticProps> => {
     };
   }
 
-  const { scrolls } = formatScrollData(data);
+  const { scrolls, scrollTypes } = formatScrollData(data);
   return {
     props: {
-      scrolls: Object.values(scrolls),
-      scrollTypes: Object.keys(scrolls),
+      scrolls,
+      scrollTypes,
     },
   };
 };
