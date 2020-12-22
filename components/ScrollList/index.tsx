@@ -1,6 +1,7 @@
 import styles from '../../styles/ScrollList.module.css';
 import ShareField from '../ShareField/index';
 import { IScroll } from '../../lib/types';
+import { formatNameId } from '../../lib/utils';
 import { ReactNode } from 'react';
 
 export const colors = {
@@ -42,7 +43,7 @@ const ScrollCard = ({
   highPrice,
   handleClick,
 }: IScrollCardProps): React.ReactElement => (
-  <li key={name} className={stylesClassName} onClick={handleClick}>
+  <li id={formatNameId(name)} className={stylesClassName} onClick={handleClick}>
     <h3>{name}</h3>
     <div>
       <span>⬇️&nbsp; {lowPrice}</span>
@@ -93,9 +94,9 @@ const ScrollList = ({
       savedScrollsMessage={savedScrollsMessage}
       link={link}
     >
-      {items.map(({ name, lowPrice, highPrice }) => (
+      {items.map(({ name, lowPrice, highPrice }, i) => (
         <ScrollCard
-          key={name}
+          key={`${name}-${i}`}
           name={name}
           stylesClassName={
             savedScrollNames && savedScrollNames.includes(name)

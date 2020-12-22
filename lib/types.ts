@@ -39,5 +39,6 @@ export interface IOwlRepoItem {
 }
 
 export interface IFormattedScrollData {
-  scrolls: IScrollLists;
+  scrolls: IScrollList[];
+  scrollTypes: string[];
 }
